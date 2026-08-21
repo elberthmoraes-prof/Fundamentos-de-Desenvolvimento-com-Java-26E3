@@ -9,11 +9,7 @@ public class Esquecidos {
 		
 		final int VALOR_MINIMO = 1;
 		final int VALOR_MAXIMO = 10;
-		
-		float inss = 1;
-		
-		float nuIRPF = 9;
-		
+
 		Random random = new Random();
 		
 		int numero = random.nextInt(VALOR_MAXIMO - VALOR_MINIMO + 1) + VALOR_MINIMO;
@@ -21,14 +17,6 @@ public class Esquecidos {
 		System.out.printf("Número sorteado entre %d e %d = %d\n:", VALOR_MINIMO, VALOR_MAXIMO, numero);
 		
 		Scanner in = new Scanner(System.in);
-		
-//		System.out.println("Informe o nome: ");
-//		String nome = in.nextLine();
-//		while(nome.isBlank()) {
-//			System.out.println("Informe o nome: ");
-//			nome = in.nextLine();
-//		}
-//		System.out.println("Nome: [" + nome + "]");
 
 		String nome;
 		do {			
