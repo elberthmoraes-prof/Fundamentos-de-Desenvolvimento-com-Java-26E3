@@ -8,32 +8,33 @@ public class MediaAluno {
 		
 		Scanner sc = new Scanner(System.in);
 		
+		Aluno aluno = new Aluno();
+		
+		System.out.println("Informe o seu nome: ");
+		aluno.nome = sc.nextLine();
+
 		System.out.print("Informe a nota do TP1: ");
-		double notaTP1 = sc.nextDouble();
+		aluno.notaTP1 = sc.nextDouble();
 		
 		System.out.print("Informe a nota do TP2: ");
-		double notaTP2 = sc.nextDouble();
+		aluno.notaTP2 = sc.nextDouble();
 
 		System.out.print("Informe a nota do TP3: ");
-		double notaTP3 = sc.nextDouble();
+		aluno.notaTP3 = sc.nextDouble();
 		
-		String situacao = null;
+		aluno.media = (aluno.notaTP1 + aluno.notaTP2 + aluno.notaTP3)/3;
 
-		double media = (notaTP1 + notaTP2 + notaTP3)/3;
-
-		if(media >= 7) {
-			situacao = "Aprovado";
-		} else if (media >= 5) {
-			situacao = "Recuperação";
+		if(aluno.media >= 7) {
+			aluno.situacao = "Aprovado";
+		} else if (aluno.media >= 5) {
+			aluno.situacao = "Recuperação";
 		} else {
-			situacao = "Reprovado";
+			aluno.situacao = "Reprovado";
 		}
 		
-		String nome = "Elberth";
-				
-		System.out.printf("A média do aluno %s é igual a %.2f\n", nome, media);
-		System.out.printf("O aluno %s está %s", nome, situacao);
+		aluno.imprimir();
 
 		sc.close();
+		
 	}
 }

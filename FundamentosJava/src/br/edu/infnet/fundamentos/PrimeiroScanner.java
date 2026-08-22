@@ -6,7 +6,7 @@ public class PrimeiroScanner {
 
     public static void main(String[] args) {
 
-        Scanner sc = new Scanner(System.in); //instanciar um objeto 
+        Scanner sc = new Scanner(System.in); 
         String nome;
         boolean nomeVazio = false;
         
@@ -22,7 +22,8 @@ public class PrimeiroScanner {
     	  
        } while (nomeVazio);
 
-        System.out.println("Maravilha!!! Bom te receber, " + nome + "!");
         sc.close();
+
+        new Aluno().imprimir(nome);
     }
 }

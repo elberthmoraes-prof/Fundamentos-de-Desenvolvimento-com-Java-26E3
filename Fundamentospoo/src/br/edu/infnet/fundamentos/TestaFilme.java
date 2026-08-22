@@ -5,14 +5,16 @@ public class TestaFilme {
 	public static void main(String[] args) {
 		
 		Filme filmeElberth = new Filme();
-		filmeElberth.impressao();
+		filmeElberth.avaliar(10);
+		filmeElberth.exibirResumo();
 
 		//
 		
 		Filme filmeMatrix = new Filme();
 		filmeMatrix.titulo = "Matrix";
 		filmeMatrix.ano = 1999;
-		filmeMatrix.avaliacao = 9.0;
+		filmeMatrix.avaliar(9.0);
+		filmeMatrix.atualizarAno(2000);
 		filmeMatrix.impressao();
 
 		//
@@ -20,7 +22,15 @@ public class TestaFilme {
 		Filme filmeInterestelar = new Filme();
 		filmeInterestelar.titulo = "Interestelar";
 		filmeInterestelar.ano = 2014;
-		filmeInterestelar.avaliacao = 9.5;
-		filmeInterestelar.impressao();
+		filmeInterestelar.avaliar(9.5);
+		filmeInterestelar.exibirResumo();
+
+		//
+		
+		Filme outroFilme = new Filme();
+		outroFilme.titulo = "Interestelar";
+		outroFilme.ano = 2014;
+		outroFilme.avaliar(-20);
+		outroFilme.impressao();
 	}
 }
