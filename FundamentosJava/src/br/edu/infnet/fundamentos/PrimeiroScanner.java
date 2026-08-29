@@ -2,6 +2,8 @@ package br.edu.infnet.fundamentos;
 
 import java.util.Scanner;
 
+import br.edu.infnet.fundamentos.model.Aluno;
+
 public class PrimeiroScanner {
 
     public static void main(String[] args) {
