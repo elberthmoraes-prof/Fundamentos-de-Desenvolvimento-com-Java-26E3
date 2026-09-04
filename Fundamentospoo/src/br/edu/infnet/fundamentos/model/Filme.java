@@ -6,7 +6,13 @@ public class Filme {
 	private int ano;	
 	private double avaliacao;
 	
+	public Filme(String titulo, int ano) {
+		this.titulo = titulo;
+		this.ano = ano;
+	}
+	
 	public void impressao(){
+
 		System.out.printf("[Filme] O filmes %s lançado em %d teve avaliação %.2f!!!%n", titulo, ano, avaliacao);
 
 		double notaEmEstrelas = calcularNotaEmEstrelas();
@@ -15,7 +21,7 @@ public class Filme {
 	}
 	
 	public void exibirResumo(){
-		
+
 		double nota = calcularNotaEmEstrelas();
 		
 		System.out.println(titulo + " (" + ano +"): estrelas >>> " + nota);
@@ -34,13 +40,5 @@ public class Filme {
 	private double calcularNotaEmEstrelas() {
 		
 		return avaliacao / 2;
-	}
-	
-	public void setTitulo(String titulo){
-		this.titulo = titulo;
-	}
-
-	public void setAno(int ano){
-		this.ano = ano;
 	}
 }

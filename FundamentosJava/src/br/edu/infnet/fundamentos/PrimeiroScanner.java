@@ -26,6 +26,6 @@ public class PrimeiroScanner {
 
         sc.close();
 
-        new Aluno().imprimir(nome);
+        new Aluno(nome).imprimir(nome);
     }
 }
