@@ -4,9 +4,7 @@ public class GaragemApp {
 
 	public static void main(String[] args) {
 		Maquina maquina = new Maquina("Lavadora");
-//		maquina.realizarRevisao();
 		Carro carro = new Carro("ABC1234", "Qualquer", 1900, 8);
-//		carro.realizarRevisao();
 		
 		Revisto[] revistos = {maquina, carro};
 		
