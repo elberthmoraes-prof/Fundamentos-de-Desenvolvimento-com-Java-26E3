@@ -1,6 +1,6 @@
 package br.edu.infnet.garagem;
 
-public class Carro extends Veiculo {
+public class Carro extends Veiculo implements Revisto {
 	
 	private int numeroPortas;
 
@@ -15,4 +15,16 @@ public class Carro extends Veiculo {
 		super.exibirResumo();
 		System.out.printf(" - %d%n", numeroPortas);
 	}
+
+	@Override
+	public double calcularCustoManutencao() {
+
+		return 800 + (numeroPortas * 50);
+	}
+
+	@Override
+	public void realizarRevisao() {
+		System.out.println("Realizando a revisão de itens de um carro!");
+	}
 }
+
