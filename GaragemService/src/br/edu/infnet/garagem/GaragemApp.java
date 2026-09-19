@@ -1,5 +1,12 @@
 package br.edu.infnet.garagem;
 
+import br.edu.infnet.garagem.interfaces.Revisto;
+import br.edu.infnet.garagem.model.Caminhao;
+import br.edu.infnet.garagem.model.Carro;
+import br.edu.infnet.garagem.model.Maquina;
+import br.edu.infnet.garagem.model.Moto;
+import br.edu.infnet.garagem.model.Veiculo;
+
 public class GaragemApp {
 
 	public static void main(String[] args) {

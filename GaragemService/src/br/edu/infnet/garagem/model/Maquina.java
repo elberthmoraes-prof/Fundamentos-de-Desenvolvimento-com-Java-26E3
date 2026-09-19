@@ -1,4 +1,6 @@
-package br.edu.infnet.garagem;
+package br.edu.infnet.garagem.model;
+
+import br.edu.infnet.garagem.interfaces.Revisto;
 
 public class Maquina implements Revisto {
 

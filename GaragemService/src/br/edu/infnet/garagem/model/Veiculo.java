@@ -1,4 +1,4 @@
-package br.edu.infnet.garagem;
+package br.edu.infnet.garagem.model;
 
 public abstract class Veiculo {
 
@@ -7,6 +7,11 @@ public abstract class Veiculo {
 	private int ano;
 
 	public Veiculo(String placa, String marca, int ano) {
+		//RF01
+		if(ano < 1900 || ano > 2026) {
+			throw new IllegalArgumentException("Ano do veículo está inválido: " + ano);
+		}
+		
 		this.placa = placa;
 		this.marca = marca;
 		this.ano = ano;

@@ -1,4 +1,4 @@
-package br.edu.infnet.garagem;
+package br.edu.infnet.garagem.model;
 
 public class Moto extends Veiculo {
 	

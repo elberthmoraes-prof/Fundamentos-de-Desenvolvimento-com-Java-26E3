@@ -1,4 +1,4 @@
-package br.edu.infnet.garagem;
+package br.edu.infnet.garagem.interfaces;
 
 public interface Revisto {
 
