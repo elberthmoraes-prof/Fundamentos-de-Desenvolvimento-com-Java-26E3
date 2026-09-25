@@ -9,6 +9,7 @@ public abstract class Veiculo {
 	public Veiculo(String placa, String marca, int ano) {
 		//RF01
 		if(ano < 1900 || ano > 2026) {
+			//RF02
 			throw new IllegalArgumentException("Ano do veículo está inválido: " + ano);
 		}
 		
@@ -20,10 +21,15 @@ public abstract class Veiculo {
 	public abstract double calcularCustoManutencao();
 
 	public void exibirResumo() {
-		System.out.printf("%s - %s - %d", placa, marca, ano);
+		System.out.printf(toString());
 	}	
 	
 	public final void exibirIdentificacao() {
 		System.out.println("Exibir ID!!!");
+	}
+	
+	@Override
+	public String toString() {
+		return String.format("%s - %s - %d", placa, marca, ano);
 	}
 }

@@ -15,7 +15,6 @@ public class GaragemExceptionApp {
 				fiat.exibirResumo();
 
 			} catch (IllegalArgumentException e) {
-				//RF02
 				System.err.println("Não foi possível criar o veículo: " + e.getMessage());
 			}
 			
@@ -52,8 +51,5 @@ public class GaragemExceptionApp {
 		} finally {
 			System.out.println("Fim do Programa");
 		}
-		
-		
-		
 	}
 }
