@@ -17,7 +17,7 @@ public class Evento {
 	}
 	
 	public boolean temVaga(){
-		
+
 		return qtdeInscritos < capacidade;
 	}
 	
