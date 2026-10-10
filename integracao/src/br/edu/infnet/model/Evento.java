@@ -8,12 +8,14 @@ public class Evento {
 	private int qtdeInscritos;
 	
 	public Evento(String nome, String local, int capacidade) {
+
+		if(capacidade <= 0) {
+			throw new IllegalArgumentException("A capacidade deve ser maior que zero");
+		}
+		
 		this.nome = nome;
 		this.local = local;
-		
-		if(capacidade > 0) {
-			this.capacidade = capacidade;
-		}
+		this.capacidade = capacidade;
 	}
 	
 	public boolean temVaga(){
@@ -36,5 +38,9 @@ public class Evento {
 				capacidade, 
 				qtdeInscritos
 			);
+	}
+
+	public int getQtdeInscritos() {
+		return qtdeInscritos;
 	}
 }

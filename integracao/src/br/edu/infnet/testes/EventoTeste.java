@@ -1,6 +1,8 @@
 package br.edu.infnet.testes;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.DisplayName;
@@ -13,13 +15,13 @@ public class EventoTeste {
 	@Test
 	@DisplayName("ET-001 - Deve possuir vagas ao criar um evento")
 	void devePossuirVagasQuandoNaoHaInscritos() {
-		//SETUP: prepara o cenário
+		//A = arrange :: SETUP: prepara o cenário
 		Evento evento = new Evento("Java Day", "Infnet", 10);
 		
-		//EXECUÇÃO: executa o comportamento
+		//A = act :: EXECUÇÃO: executa o comportamento
 		boolean possuiVaga = evento.temVaga();
 		
-		//ASSERTION: verifica o resultado esperado
+		//A = assert :: ASSERTION: verifica o resultado esperado
 		assertTrue(possuiVaga, "Um evento vazio deve possuir vagas disponíveis.");
 	}
 	
@@ -40,16 +42,62 @@ public class EventoTeste {
 	}
 
 	@Test
-	@DisplayName("ET-003 - Evento com capacidade zero não possui vagas")
-	void naoDevePossuirVagasComCapacidadeZero() {
+	@DisplayName("ET-003 - Não deve permitir capacidade zerada")
+	void deveRejeitarCapacidadeZerada() {
 		
-		//SETUP: prepara o cenário
-		Evento evento = new Evento("Java Day", "Infnet", 0);
+		//EXECUÇÃO + ASSERTION
+		assertThrows(
+				IllegalArgumentException.class, 
+				() -> new Evento("Java Day", "Infnet", 0), 
+				"Uma capacidade negativa deve ser rejeitada"
+			);
+	}
+
+	@Test
+	@DisplayName("ET-004 - Uma inscrição deve aumentar a quantidade de participantes")
+	void devIncrementarQuantidadeDeInscritos() {
 		
-		//EXECUÇÃO: executa o comportamento
-		boolean possuiVaga = evento.temVaga();
+		//SETUP
+		Evento evento = new Evento("Java Day", "Infnet", 10);
+		int qtdeEsperada = 1;
 		
-		//ASSERTION: verifica o resultado esperado
-		assertFalse(possuiVaga, "Um evento com capacidade zero não deve possuir vagas disponíveis.");
+		//EXECUÇÃO
+		evento.inscrever();
+		int qtdeInscritos = evento.getQtdeInscritos();
+		
+		//ASSERTION
+		assertEquals(qtdeEsperada, qtdeInscritos, "Uma inscrição deve aumentar o total para 1");
+	}
+
+	@Test
+	@DisplayName("ET-005 - Um evento não pode ultrapassar sua capacidade máxima")
+	void naoDeveUltrapassarCapacidadeMaxima() {
+		
+		//SETUP
+		int capacidadeEsperada = 2;
+		Evento evento = new Evento("Java Day", "Infnet", capacidadeEsperada);
+		
+		//EXECUÇÃO
+		evento.inscrever();
+		evento.inscrever();
+
+		evento.inscrever();
+		
+		int qtdeInscritos = evento.getQtdeInscritos();
+		
+		//ASSERTION
+		assertEquals(capacidadeEsperada, qtdeInscritos, "A quantidade de inscritos não pode ultrapassar 2");
+	}
+
+	@Test
+	@DisplayName("ET-006 - Um evento não poderá ser criado com capacidade inválida")
+	void deveRejeitarCapacidadeNegativa() {
+		
+		//EXECUÇÃO + ASSERTION
+		assertThrows(
+				IllegalArgumentException.class, 
+				() -> new Evento("Java Day", "Infnet", -5), 
+				"Uma capacidade negativa deve ser rejeitada"
+			);
 	}
 }
