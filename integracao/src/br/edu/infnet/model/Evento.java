@@ -9,8 +9,12 @@ public class Evento {
 	
 	public Evento(String nome, String local, int capacidade) {
 
+		if(nome == null || nome.isBlank()) {
+			throw new IllegalArgumentException("O nome do evento é obrigatório.");
+		}
+		
 		if(capacidade <= 0) {
-			throw new IllegalArgumentException("A capacidade deve ser maior que zero");
+			throw new IllegalArgumentException("A capacidade deve ser maior que zero.");
 		}
 		
 		this.nome = nome;
