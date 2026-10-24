@@ -4,7 +4,7 @@ import br.edu.infnet.model.Evento;
 
 public class EventoApp {
 	public static void main(String[] args) {
-		
+				
 		final int INSCRICOES = 5;
 		
 		String[] nomes = {"Café Ágil", "Java Day", "Aula de Fundamentos"};

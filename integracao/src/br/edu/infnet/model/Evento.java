@@ -1,50 +1,80 @@
+
 package br.edu.infnet.model;
 
 public class Evento {
 
-	private String nome;
-	private String local;
-	private int capacidade;
-	private int qtdeInscritos;
-	
-	public Evento(String nome, String local, int capacidade) {
+    private String nome;
+    private String local;
+    private int capacidade;
+    private int qtdeInscritos;
 
-		if(nome == null || nome.isBlank()) {
-			throw new IllegalArgumentException("O nome do evento é obrigatório.");
+    public Evento(String nome, String local, int capacidade) {
+
+        if (nome == null || nome.isBlank()) {
+            throw new IllegalArgumentException(
+                "O nome do evento é obrigatório.");
+        }
+
+        if (capacidade <= 0) {
+            throw new IllegalArgumentException(
+                "A capacidade deve ser maior que zero.");
+        }
+
+        this.nome = nome;
+        this.local = local;
+        this.capacidade = capacidade;
+    }
+
+    public boolean temVaga() {
+        return qtdeInscritos < capacidade;
+    }
+
+    public boolean inscrever() {
+
+        if (!temVaga()) {
+            return false;
+        }
+
+        qtdeInscritos++;
+        return true;
+    }
+
+    public int getQtdeInscritos() {
+        return qtdeInscritos;
+    }
+
+    public int getCapacidade() {
+        return capacidade;
+    }
+
+    @Override
+    public String toString() {
+        return String.format(
+            "nome=%s; local=%s; capacidade=%d; qtdeInscritos=%d",
+            nome,
+            local,
+            capacidade,
+            qtdeInscritos
+        );
+    }
+
+	public double getPercentualOcupacao() {
+		
+		double percentual = 100;
+
+		return (qtdeInscritos * percentual) / capacidade;
+	}
+
+	public String getEstadoOcupacao() {
+
+		if(qtdeInscritos == 0) {
+			return "VAZIO";
 		}
 		
-		if(capacidade <= 0) {
-			throw new IllegalArgumentException("A capacidade deve ser maior que zero.");
+		if(capacidade == qtdeInscritos) {
+			return "LOTADO";
 		}
-		
-		this.nome = nome;
-		this.local = local;
-		this.capacidade = capacidade;
-	}
-	
-	public boolean temVaga(){
 
-		return qtdeInscritos < capacidade;
-	}
-	
-	public void inscrever(){
-		if(temVaga()) {
-			qtdeInscritos++;
-		}
-	}
-	
-	@Override
-	public String toString() {
-
-		return String.format("nome=%s; local=%s; capacidade=%d; qtdeInscritos=%d", 
-				nome, 
-				local, 
-				capacidade, 
-				qtdeInscritos
-			);
-	}
-
-	public int getQtdeInscritos() {
-		return qtdeInscritos;
+		return "PARCIALMENTE_OCUPADO";
 	}
 }
