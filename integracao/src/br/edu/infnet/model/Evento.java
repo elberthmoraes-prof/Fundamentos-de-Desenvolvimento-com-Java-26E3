@@ -25,8 +25,12 @@ public class Evento {
         this.capacidade = capacidade;
     }
 
+	public int getVagasDisponiveis() {
+		return capacidade - qtdeInscritos;
+	}
+
     public boolean temVaga() {
-        return qtdeInscritos < capacidade;
+        return getVagasDisponiveis() > 0;
     }
 
     public boolean inscrever() {

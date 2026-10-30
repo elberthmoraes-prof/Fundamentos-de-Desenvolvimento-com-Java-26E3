@@ -195,6 +195,56 @@ public class EventoTeste {
         	assertEquals("LOTADO", estadoOcupacao);
         }
         
+        @Test
+        @DisplayName("ET-017A - Deve informar dez vagas disponíveis")
+        void deveInformarVagasDisponiveisNumEventoVazio() {
+        	
+        	// ARRANGE: evento preparado pelo @BeforeEach
+        	int qtdeVagas = 10;
+        	
+        	// ACT
+        	int vagasDisponiveis = evento.getVagasDisponiveis();
+        	
+        	// ASSERT
+        	assertEquals(qtdeVagas, vagasDisponiveis);
+        }
+        
+        @Test
+        @DisplayName("ET-017B - Deve informar sete vagas disponíveis")
+        void deveInformarVagasDisponiveisNumEventoParcialmenteOcupado() {
+        	
+        	// ARRANGE: evento preparado pelo @BeforeEach
+        	int qtdeVagas = 7;
+        	evento.inscrever();
+        	evento.inscrever();
+        	evento.inscrever();
+        	
+        	// ACT
+        	int vagasDisponiveis = evento.getVagasDisponiveis();
+        	
+        	// ASSERT
+        	assertEquals(qtdeVagas, vagasDisponiveis);
+        }
+        
+
+    	@Test
+        @DisplayName("ET-017C - Deve informar zero vaga quando lotado")
+        void deveInformarZeroVagaQuandoEventoLotado() {
+        	
+        	// ARRANGE
+    		Evento eventoLotado = new Evento("Java Day", "Infnet", 2);
+    		eventoLotado.inscrever();
+    		eventoLotado.inscrever();
+
+        	int qtdeVagas = 0;
+
+        	// ACT
+        	int vagasDisponiveis = eventoLotado.getVagasDisponiveis();
+        	
+        	// ASSERT
+        	assertEquals(qtdeVagas, vagasDisponiveis);
+    }
+        
     }
 
     /**
@@ -261,7 +311,7 @@ public class EventoTeste {
         }
 
         @Test
-        @DisplayName("ET-012 - Deve informar sucesso na inscrição")
+        @DisplayName("ET-012A - Deve informar sucesso na inscrição")
         void deveInformarSucessoNaInscricao() {
 
             // ACT
@@ -272,7 +322,7 @@ public class EventoTeste {
         }
 
         @Test
-        @DisplayName("ET-012 - Deve informar falha quando lotado")
+        @DisplayName("ET-012B - Deve informar falha quando lotado")
         void deveInformarFalhaQuandoLotado() {
 
             // ARRANGE
@@ -324,35 +374,41 @@ public class EventoTeste {
 
         @BeforeEach
         void prepararCenario() {
-        	System.out.println("1 - SETUP");
         	
             evento = new Evento("Java Day", "Infnet", 10);
         }
         
-        @Test
-        @DisplayName("???")
-        void deveApresentarToString() {
-        	
-        	String mensagemEsperada = "nome=Java Day; local=Infnet; capacidade=10; qtdeInscritos=0";
-        	
-        	String mensagem = evento.toString();
-        	
-        	assertEquals(mensagemEsperada, mensagem);
-        }
+
+		@Test
+		@DisplayName("ET-016 - Deve apresentar os dados do evento em formato textual")
+		void deveApresentarToString() {
+		
+		    // ARRANGE: evento criado pelo @BeforeEach
+		    String mensagemEsperada =
+		        "nome=Java Day; local=Infnet; capacidade=10; qtdeInscritos=0";
+		
+		    // ACT
+		    String mensagemAtual = evento.toString();
+		
+		    // ASSERT
+		    assertEquals(
+		        mensagemEsperada,
+		        mensagemAtual,
+		        "A representação textual do evento está incorreta."
+		    );
+		}
 
         @Test
         @DisplayName("ET-009 - Deve iniciar com estado válido")
         void deveIniciarEventoComEstadoValido() {
 
             // ACT
-        	System.out.println("2 - EXECUTION");
         	
             int capacidade = evento.getCapacidade();
             int inscritos = evento.getQtdeInscritos();
             boolean possuiVaga = evento.temVaga();
 
             // ASSERT
-        	System.out.println("3 - ASSERTION");
             
             assertAll(
                 "Estado inicial do evento",
@@ -367,9 +423,7 @@ public class EventoTeste {
         
         @AfterEach
         void finalizarCenario() {
-        	System.out.println("4 - TEARDOWN");
-
-        	System.out.println("");
+        	System.out.println("TEARDOWN");
         }
     }
 }
