@@ -1,6 +1,7 @@
 package br.edu.infnet.service;
 
 import br.edu.infnet.model.Evento;
+import br.edu.infnet.model.Participante;
 
 public class InscricaoService {
 
@@ -10,11 +11,15 @@ public class InscricaoService {
 		this.historico = historico;
 	}
 
-	public boolean realizarInscricao(Evento evento){
+	public boolean realizarInscricao(Evento evento, Participante participante){
 		
-		historico.registrar(evento.toString());
+		boolean resultado = evento.inscrever();
 		
-		return evento.inscrever();
+		if(resultado) {
+			historico.registrar(evento.toString());
+		}
+		
+		return resultado;
 	}
 
 }
