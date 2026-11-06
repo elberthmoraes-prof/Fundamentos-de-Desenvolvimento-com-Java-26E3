@@ -1,5 +1,6 @@
 package br.edu.infnet.testes;
 
+import static org.junit.Assert.assertSame;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -11,6 +12,8 @@ import org.junit.jupiter.api.Test;
 import br.edu.infnet.model.Evento;
 import br.edu.infnet.model.FakeHistoricoInscricoes;
 import br.edu.infnet.model.Participante;
+import br.edu.infnet.model.SpyAuditoriaInscricoes;
+import br.edu.infnet.model.StubPoliticaInscricao;
 import br.edu.infnet.service.HistoricoInscricoes;
 import br.edu.infnet.service.InscricaoService;
 
@@ -119,5 +122,252 @@ public class InscricaoServiceTeste {
 			
 			() -> assertEquals(1, quantidade)
 		);
+	}
+	
+	@Test
+	@DisplayName("ET-20A - Deve aceitar inscrição permitida pela política")
+	void deveAceitarInscricaoPermitidaPelaPolitica() {
+		
+		// ARRANGE
+		Evento evento = new Evento("Java Day", "Infnet", 10);
+		
+		Participante participante = new Participante("Dona Maria");
+
+		FakeHistoricoInscricoes historico = new FakeHistoricoInscricoes();
+		
+		StubPoliticaInscricao politica = new StubPoliticaInscricao(true);
+		
+		InscricaoService service = new InscricaoService(historico, politica);
+		
+		// ACT
+		boolean resultado = service.realizarInscricao(evento, participante);
+		int qtdeInscritos = evento.getQtdeInscritos();
+		int quantidade = historico.obterQuantidade();
+				
+		// ASSERT
+		assertAll(
+		
+			() -> assertTrue(resultado),
+			
+			() -> assertEquals(1, qtdeInscritos),
+			
+			() -> assertEquals(1, quantidade)
+		);
+		
+	}
+	
+	@Test
+	@DisplayName("ET-20B - Deve recusar inscrição pela política")
+	void deveRecusarInscricaoPelaPolitica() {
+		
+		// ARRANGE
+		Evento evento = new Evento("Java Day", "Infnet", 10);
+		
+		Participante participante = new Participante("Sr João");
+
+		FakeHistoricoInscricoes historico = new FakeHistoricoInscricoes();
+		
+		StubPoliticaInscricao politica = new StubPoliticaInscricao(false);
+		
+		InscricaoService service = new InscricaoService(historico, politica);
+		
+		// ACT
+		boolean resultado = service.realizarInscricao(evento, participante);
+		int qtdeInscritos = evento.getQtdeInscritos();
+		int quantidade = historico.obterQuantidade();
+				
+		// ASSERT
+		assertAll(
+		
+			() -> assertFalse(resultado),
+			
+			() -> assertEquals(0, qtdeInscritos),
+			
+			() -> assertEquals(0, quantidade)
+		);
+		
+	}
+
+	@Test
+	@DisplayName("ET-20C - Deve recusar evento lotado")
+	void deveRecusarEventoLotadoMesmoComPoliticaPermitida() {
+		
+		// ARRANGE
+		Evento evento = new Evento("Java Day", "Infnet", 1);
+		
+		evento.inscrever();
+		
+		Participante participante = new Participante("Sr João");
+
+		FakeHistoricoInscricoes historico = new FakeHistoricoInscricoes();
+		
+		StubPoliticaInscricao politica = new StubPoliticaInscricao(false);
+		
+		InscricaoService service = new InscricaoService(historico, politica);
+		
+		// ACT
+		boolean resultado = service.realizarInscricao(evento, participante);
+		int qtdeInscritos = evento.getQtdeInscritos();
+		int quantidade = historico.obterQuantidade();
+				
+		// ASSERT
+		assertAll(
+		
+			() -> assertFalse(resultado),
+			
+			() -> assertEquals(1, qtdeInscritos),
+			
+			() -> assertEquals(0, quantidade)
+		);
+		
+	}
+	
+	@Test
+	@DisplayName("ET-21A - Deve auditar uma inscrição aceita")
+	void deveAuditarInscricaoAceita() {
+		
+		// ARRANGE
+		Evento evento = new Evento("Java Day", "Infnet", 10);
+		
+		Participante participante = new Participante("Lucas Santos");
+
+		FakeHistoricoInscricoes historico = new FakeHistoricoInscricoes();
+		
+		StubPoliticaInscricao politica = new StubPoliticaInscricao(true);
+		
+		SpyAuditoriaInscricoes auditoria = new SpyAuditoriaInscricoes();
+		
+		InscricaoService service = new InscricaoService(historico, politica, auditoria);
+		
+		// ACT
+		boolean resultado = service.realizarInscricao(evento, participante);
+		int qtdeInscritos = evento.getQtdeInscritos();
+		int quantidade = historico.obterQuantidade();
+		int qtdeChamadas = auditoria.getQtdeChamadas();
+		
+		// ASSERT
+		assertAll(
+				
+				() -> assertTrue(resultado),
+				
+				() -> assertEquals(1, qtdeInscritos),
+				
+				() -> assertEquals(1, quantidade),
+				
+				() -> assertEquals(1, qtdeChamadas)
+			);
+		
+		
+	}
+	@Test
+	@DisplayName("ET-21B - Não deve auditar uma inscrição recusada")
+	void naoDeveAuditarInscricaoRecusada() {
+		
+		// ARRANGE
+		Evento evento = new Evento("Java Day", "Infnet", 10);
+		
+		Participante participante = new Participante("Lucas Santos");
+
+		FakeHistoricoInscricoes historico = new FakeHistoricoInscricoes();
+		
+		StubPoliticaInscricao politica = new StubPoliticaInscricao(false);
+		
+		SpyAuditoriaInscricoes auditoria = new SpyAuditoriaInscricoes();
+		
+		InscricaoService service = new InscricaoService(historico, politica, auditoria);
+		
+		// ACT
+		boolean resultado = service.realizarInscricao(evento, participante);
+		int qtdeInscritos = evento.getQtdeInscritos();
+		int quantidade = historico.obterQuantidade();
+		int qtdeChamadas = auditoria.getQtdeChamadas();
+		
+		// ASSERT
+		assertAll(
+				
+				() -> assertFalse(resultado),
+				
+				() -> assertEquals(0, qtdeInscritos),
+				
+				() -> assertEquals(0, quantidade),
+				
+				() -> assertEquals(0, qtdeChamadas)
+			);
+		
+		
+	}
+	@Test
+	@DisplayName("ET-21C - Não deve auditar evento lotado")
+	void naoDeveAuditarEventoLotado() {
+		
+		// ARRANGE
+		Evento evento = new Evento("Java Day", "Infnet", 1);
+		
+		evento.inscrever();
+		
+		Participante participante = new Participante("Lucas Santos");
+
+		FakeHistoricoInscricoes historico = new FakeHistoricoInscricoes();
+		
+		StubPoliticaInscricao politica = new StubPoliticaInscricao(true);
+		
+		SpyAuditoriaInscricoes auditoria = new SpyAuditoriaInscricoes();
+		
+		InscricaoService service = new InscricaoService(historico, politica, auditoria);
+		
+		// ACT
+		boolean resultado = service.realizarInscricao(evento, participante);
+		int qtdeInscritos = evento.getQtdeInscritos();
+		int quantidade = historico.obterQuantidade();
+		int qtdeChamadas = auditoria.getQtdeChamadas();
+		
+		// ASSERT
+		assertAll(
+				
+				() -> assertFalse(resultado),
+				
+				() -> assertEquals(1, qtdeInscritos),
+				
+				() -> assertEquals(0, quantidade),
+				
+				() -> assertEquals(0, qtdeChamadas)
+			);
+		
+		
+	}
+	@Test
+	@DisplayName("ET-21D - Deve auditar objetos corretos")
+	void deveAuditarObjetosCorretos() {
+		
+		// ARRANGE
+		Evento evento = new Evento("Java Day", "Infnet", 10);
+		
+		Participante participante = new Participante("Lucas Santos");
+
+		FakeHistoricoInscricoes historico = new FakeHistoricoInscricoes();
+		
+		StubPoliticaInscricao politica = new StubPoliticaInscricao(true);
+		
+		SpyAuditoriaInscricoes auditoria = new SpyAuditoriaInscricoes();
+		
+		InscricaoService service = new InscricaoService(historico, politica, auditoria);
+		
+		// ACT
+		service.realizarInscricao(evento, participante);
+		int qtdeChamadas = auditoria.getQtdeChamadas();
+		Evento ultimoEvento = auditoria.getUltimoEvento();
+		Participante ultimoParticipante = auditoria.getUltimoParticipante();
+		
+		// ASSERT
+		
+		assertAll(
+				
+				() -> assertEquals(1, qtdeChamadas),
+				
+				() -> assertSame(evento, ultimoEvento),
+				
+				() -> assertSame(participante, ultimoParticipante)
+				
+			);
 	}
 }
