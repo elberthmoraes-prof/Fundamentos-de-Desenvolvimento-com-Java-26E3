@@ -414,6 +414,7 @@ public class InscricaoServiceTeste {
 		verify(autorizador, times(1)).autorizar(evento, participante);
 	}
 
+	@SuppressWarnings("unused")
 	@Test
 	@DisplayName("ET-22B - Deve recusar autorização negada")
 	void deveRecusarAutorizacaoNegada() {
